@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/pingcap/parser"
 	"github.com/pingcap/parser/ast"
 	_ "github.com/pingcap/parser/test_driver"
@@ -12,9 +14,18 @@ type SelectField struct {
 	AsName    string `json:"asName"`
 }
 
+type SqlType int
+
+const (
+	READ_STMT = SqlType(1)
+	DML_STMT  = SqlType(2)
+	DDL_STMT  = SqlType(3)
+)
+
 type sqlElements struct {
-	SelectFields []SelectField	`json:"selectFields"`
-	TableNames   map[string]string		`json:"tableNames"`
+	SelectFields []SelectField     `json:"selectFields"`
+	TableNames   map[string]string `json:"tableNames"`
+	Type         SqlType
 }
 
 func (v *sqlElements) getCols(in ast.Node) {
@@ -47,9 +58,17 @@ func (v *sqlElements) getTables(in ast.Node) {
 	}
 }
 
+func (v *sqlElements) getSubQueries(in ast.Node) {
+	if table, ok := in.(*ast.SelectStmt); ok {
+		// -> 作为一个工具
+		fmt.Println(table.Text())
+	}
+}
+
 func (v *sqlElements) Enter(in ast.Node) (ast.Node, bool) {
 	v.getCols(in)
 	v.getTables(in)
+	v.getSubQueries(in)
 	return in, false
 }
 
