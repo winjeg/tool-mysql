@@ -17,15 +17,21 @@ type SelectField struct {
 type SqlType int
 
 const (
-	READ_STMT = SqlType(1)
-	DML_STMT  = SqlType(2)
-	DDL_STMT  = SqlType(3)
+	READ_STMT  = SqlType(1)
+	DML_STMT   = SqlType(2)
+	DDL_STMT   = SqlType(3)
+	OTHER_STMT = SqlType(9)
+)
+
+var (
+	tiParser = parser.New()
 )
 
 type sqlElements struct {
 	SelectFields []SelectField     `json:"selectFields"`
 	TableNames   map[string]string `json:"tableNames"`
-	Type         SqlType
+	Type         SqlType           `json:"type"`
+	StmtNum      int               `json:"stmtNum"`
 }
 
 func (v *sqlElements) getCols(in ast.Node) {
@@ -59,9 +65,8 @@ func (v *sqlElements) getTables(in ast.Node) {
 }
 
 func (v *sqlElements) getSubQueries(in ast.Node) {
-	if table, ok := in.(*ast.SelectStmt); ok {
-		// -> 作为一个工具
-		fmt.Println(table.Text())
+	if _, ok := in.(*ast.SelectStmt); ok {
+		v.StmtNum++
 	}
 }
 
@@ -75,17 +80,40 @@ func (v *sqlElements) Enter(in ast.Node) (ast.Node, bool) {
 func (v *sqlElements) Leave(in ast.Node) (ast.Node, bool) {
 	return in, true
 }
+
 func Extract(rootNode *ast.StmtNode) *sqlElements {
+	if rootNode == nil {
+		return nil
+	}
 	v := &sqlElements{}
+	switch t := (*rootNode).(type) {
+	case *ast.SelectStmt:
+		v.Type = READ_STMT
+	case *ast.UpdateStmt, *ast.DeleteStmt, *ast.InsertStmt:
+		v.Type = DML_STMT
+	case *ast.CreateIndexStmt, *ast.CreateTableStmt, *ast.CreateViewStmt, *ast.AlterTableStmt, *ast.DropTableStmt, *ast.DropIndexStmt, *ast.AlterDatabaseStmt, *ast.TruncateTableStmt:
+		v.Type = DDL_STMT
+	default:
+		_ = t
+		v.Type = OTHER_STMT
+	}
 	(*rootNode).Accept(v)
 	return v
 }
-func Parse(sql string) (*ast.StmtNode, error) {
-	p := parser.New()
 
-	stmtNodes, _, err := p.Parse(sql, "", "")
+func Parse(sql string) (*ast.StmtNode, error) {
+	stmtNodes, _, err := tiParser.Parse(sql, "", "")
 	if err != nil {
 		return nil, err
 	}
 	return &stmtNodes[0], nil
+}
+
+func Parse2Elements(sql string) *sqlElements {
+	astNode, err := Parse(sql)
+	if err != nil {
+		fmt.Printf("parse error: %v\n", err.Error())
+		return nil
+	}
+	return Extract(astNode)
 }
