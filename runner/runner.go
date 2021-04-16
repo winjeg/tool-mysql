@@ -8,15 +8,15 @@ import (
 
 // represents a cell element in a table
 type CellElement struct {
-	Type  string
-	Key   string
-	Value interface{}
+	Type  string      `json:"type"`
+	Key   string      `json:"key"`
+	Value interface{} `json:"value"`
 }
 
 // represents a row in a table
 type TableRow struct {
-	Cells    []CellElement
-	Position int
+	Cells    []CellElement `json:"cells"`
+	Position int           `json:"position"`
 }
 
 // table data
@@ -58,9 +58,9 @@ func QueryData(db *sql.DB, query string) (TableData, error) {
 				cells[i].Value = nil
 			} else {
 				switch cells[i].Type {
-				case "INT8", "INT4", "INT2":
+				case "INT", "TINYINT", "BIGINT", "MEDIUMINT", "SMALLINT":
 					cells[i].Value, _ = strconv.Atoi(string(*v))
-				case "DECIMAL", "FLOAT4", "FLOAT8":
+				case "DECIMAL", "FLOAT", "DOUBLE":
 					cells[i].Value, _ = strconv.ParseFloat(string(*v), 64)
 				default:
 					cells[i].Value = string(*v)
