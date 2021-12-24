@@ -1,5 +1,6 @@
 # tool-mysql
 
+<<<<<<< HEAD
 [![Go Report Card](https://goreportcard.com/badge/github.com/winjeg/tool-mysql)](https://goreportcard.com/report/github.com/winjeg/tool-mysql)
 ![Golang CI](https://golangci.com/badges/github.com/winjeg/tool-mysql.svg)
 [![codecov](https://codecov.io/gh/winjeg/tool-mysql/branch/master/graph/badge.svg)](https://codecov.io/gh/winjeg/tool-mysql)
@@ -42,36 +43,36 @@ use `db-filer -h` to view the help content below
 db-filler usage:
 db-filler -H localhost -p 3306 -a 123456 -d test -t person -n 1000
 ======================================================
-  -H string
-    	address of a mysql server
-  -a string
-    	password/auth of the mysql server
-  -d string
-    	database name  of the mysql server to operate on
-  -dwn int
-    	the number of routines to perform ddl (default 10)
-  -e string
-    	the sql to be executed before everything starts
-  -ef string
-    	the file where to put the error encountered when executing sql, if nothing specified, the error will be only in stdout 
-  -gwn int
-    	the number of routines to generate sql  (default 10)
-  -iwn int
-    	the number of routines to perform insertion (default 10)
-  -n int
-    	the number of sql to be generated and inserted (default 10)
-  -og
-    	only generate the sql, don't do insertion
-  -p int
-    	port of the mysql server (default 3306)
-  -rn int
-    	the number of rows in one sql (default 1)
-  -sf string
-    	the file to save generated sql, if none specified, no sql will be saved 
-  -t string
-    	the table name to be used to generate sql and to be inserted
-  -u string
-    	username of the mysql server
+-H string
+address of a mysql server
+-a string
+password/auth of the mysql server
+-d string
+database name  of the mysql server to operate on
+-dwn int
+the number of routines to perform ddl (default 10)
+-e string
+the sql to be executed before everything starts
+-ef string
+the file where to put the error encountered when executing sql, if nothing specified, the error will be only in stdout
+-gwn int
+the number of routines to generate sql  (default 10)
+-iwn int
+the number of routines to perform insertion (default 10)
+-n int
+the number of sql to be generated and inserted (default 10)
+-og
+only generate the sql, don't do insertion
+-p int
+port of the mysql server (default 3306)
+-rn int
+the number of rows in one sql (default 1)
+-sf string
+the file to save generated sql, if none specified, no sql will be saved
+-t string
+the table name to be used to generate sql and to be inserted
+-u string
+username of the mysql server
 ```
 
 ###  the `conf.yaml`
@@ -109,3 +110,6 @@ log:
 ```
 
  
+=======
+nothing more than a tool here.
+>>>>>>> 22810b42b602b351532970f22e0945620db684af
