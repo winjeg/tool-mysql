@@ -28,7 +28,6 @@ jobs:
   test-setup:
     working_directory: ~/repo
     docker:
-      - image: golang:1.17.5-buster
       - image: mysql:5.6.51
         environment:
           MYSQL_ROOT_PASSWORD: 4321zxcv
@@ -44,7 +43,7 @@ jobs:
       - run:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
-            apt-get update && apt install -y default-mysql-client
+            apt-get update && apt install -y default-mysql-client mariadb-client-10.1
             mysql -h 127.0.0.1 -u testuser -p123456 --execute="use test; CREATE TABLE  label  (  id  INT ( 11 ) UNSIGNED NOT NULL COMMENT 'the primary key',  name  VARCHAR ( 64 ) NOT NULL DEFAULT 'unknown' COMMENT 'name',  age  TINYINT ( 4 ) NOT NULL DEFAULT '0' COMMENT 'age',  deleted  bit ( 1 ) NOT NULL,  note  VARCHAR ( 255 ) DEFAULT NULL COMMENT 'desc',  created  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'created time',  updated  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'last updated',  personcol  FLOAT ( 5, 3 ) UNSIGNED DEFAULT NULL,  personcol2  DOUBLE ( 6, 3 ) DEFAULT NULL,  personcol1  DECIMAL ( 3, 2 ) DEFAULT NULL,  charcol  CHAR ( 45 ) DEFAULT NULL,  textCol  MEDIUMTEXT,  bitcol  bit ( 19 ) DEFAULT NULL, PRIMARY KEY (  id  ), UNIQUE KEY  idx_id  (  id  ), KEY  idx_name  (  name  )  ) ENGINE = INNODB DEFAULT CHARSET = utf8 COMMENT = 'table for person information'; "
       - run:
           name: Run tests
