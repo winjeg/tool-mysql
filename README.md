@@ -27,7 +27,7 @@ with the program you can fill a table rapidly and easily.
 
 ### Get it
 ```
-go get github.com/winjeg/db-filler
+go get github.com/winjeg/tool-mysql
 ```
 
 ### build it
@@ -75,39 +75,3 @@ the table name to be used to generate sql and to be inserted
 -u string
 username of the mysql server
 ```
-
-###  the `conf.yaml`
-1. the conf.yaml is not really necessary, but you can use it when you don't want specify command line args.
-2. the priority of command line args is higher than the config in `conf.yaml`
-```yaml
-database:                # basic database connection information
-  dbName: test
-  host: 172.17.0.2
-  port: 3306
-  username: testuser
-  password: 123456
-  dbType: mysql
-  maxConn: 100
-  idleConn: 10
-
-worker:
-  tableName: person       # table name to generate sql from, and to insert to
-  sqlNum: 10              # total num of sql to generate
-  generateWorkerNum: 10   # how many threads to use to generate sql
-  insertWorkerNum: 10     # how many threads to use to run the insertion
-  ddlWorkerNum: 10        # how many threads to use to run the ddl
-  rowNum: 1               # how many rows to be generated in one sql
-extra:
-  sql: "SELECT 1"
-  errorFile: error.sql    # where to save the error sql, when execution failure happens
-  sqlFile: insert.sql     # where to save generate sql
-  onlyGenerate: false     # only generate sql, don't execute them
-
-log:
-  level: info
-  format: colored
-  output: std
-  report-caller: true
-```
- 
-
