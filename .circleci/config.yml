@@ -11,10 +11,34 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
       - image: circleci/golang:1.15.8
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: circleci/mysql:8.0.4
+        auth:
+          username: testuser
+          password: $MYSQL_PASS
+        environment:
+          MYSQL_ROOT_PASSWORD: 4321zxcv
+          MYSQL_DATABASE: test
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: 123456
     steps:
       - checkout
+      - run:
+          # Our primary container isn't MYSQL so run a sleep command until it's ready.
+          name: Waiting for MySQL to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z 127.0.0.1 3306 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for MySQL && exit 1
+      - run:
+          name: Install MySQL CLI; Import dummy data; run an example query
+          command: |
+            sudo apt-get install default-mysql-client
+            mysql -h 127.0.0.1 -u testuer -p123456 --execute="CREATE TABLE `label` ( `id` int(11) unsigned NOT NULL COMMENT "the primary key", `name` varchar(64) NOT NULL DEFAULT "unknown" COMMENT "name", `age` tinyint(4) NOT NULL DEFAULT "0" COMMENT "age", `deleted` bit(1) NOT NULL , `note` varchar(255) DEFAULT NULL COMMENT "desc", `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT "created time", `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "last updated", `personcol` float(5,3) unsigned DEFAULT NULL, `personcol2` double(6,3) DEFAULT NULL, `personcol1` decimal(3,2) DEFAULT NULL, `charcol` char(45) DEFAULT NULL, `textCol` mediumtext, `bitcol` bit(19) DEFAULT NULL, PRIMARY KEY (`id`), UNIQUE KEY `idx_id` (`id`), KEY `idx_name` (`name`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT="table for person information";"
+
       - restore_cache:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
