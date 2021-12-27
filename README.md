@@ -4,7 +4,8 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/winjeg/tool-mysql)](https://goreportcard.com/report/github.com/winjeg/tool-mysql)
 ![Golang CI](https://golangci.com/badges/github.com/winjeg/tool-mysql.svg)
 [![codecov](https://codecov.io/gh/winjeg/tool-mysql/branch/main/graph/badge.svg?token=YCHIzS2Vyy)](https://codecov.io/gh/winjeg/tool-mysql)
-
+[![Mit License](https://img.shields.io/badge/license-MIT-blue)]('./LICENSE')
+![MinVer](https://img.shields.io/badge/Golang-1.13-blue)
 ---
 nothing more than a tool here.
 
