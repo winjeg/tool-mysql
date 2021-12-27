@@ -4,6 +4,7 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: golang:1.17.5-buster
+      - image: mysql:5.6.51
         environment:
           MYSQL_ROOT_PASSWORD: 4321zxcv
           MYSQL_DATABASE: test
@@ -27,13 +28,6 @@ jobs:
 
   test-setup:
     working_directory: ~/repo
-    docker:
-      - image: mysql:5.6.51
-        environment:
-          MYSQL_ROOT_PASSWORD: 4321zxcv
-          MYSQL_DATABASE: test
-          MYSQL_USER: testuser
-          MYSQL_PASSWORD: 123456
     steps:
       - run:
           name: Waiting for MySQL to be ready
