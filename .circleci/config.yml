@@ -12,9 +12,6 @@ jobs:
     docker:
       - image: circleci/golang:1.15.8
       - image: circleci/mysql:8.0.4
-        auth:
-          username: testuser
-          password: $MYSQL_PASS
         environment:
           MYSQL_ROOT_PASSWORD: 4321zxcv
           MYSQL_DATABASE: test
