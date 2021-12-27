@@ -6,16 +6,7 @@ import (
 	"strings"
 )
 
-type MysqlRunner struct {
-	Query string
-}
-
-func (r *MysqlRunner) Run() {
-}
-
-
-
-// Query data from a db
+// QueryData Query data from a db
 func QueryData(db *sql.DB, query string) (TableData, error) {
 	rows, qErr := db.Query(query)
 	if qErr != nil {
@@ -64,6 +55,10 @@ func QueryData(db *sql.DB, query string) (TableData, error) {
 		result = append(result, row)
 		currentRow++
 	}
-	defer rows.Close()
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+		}
+	}(rows)
 	return result, nil
 }

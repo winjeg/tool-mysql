@@ -17,10 +17,10 @@ type SelectField struct {
 type SqlType int
 
 const (
-	READ_STMT  = SqlType(1)
-	DML_STMT   = SqlType(2)
-	DDL_STMT   = SqlType(3)
-	OTHER_STMT = SqlType(9)
+	ReadStmt  = SqlType(1)
+	DmlStmt   = SqlType(2)
+	DdlStmt   = SqlType(3)
+	OtherStmt = SqlType(9)
 )
 
 var (
@@ -88,14 +88,14 @@ func Extract(rootNode *ast.StmtNode) *sqlElements {
 	v := &sqlElements{}
 	switch t := (*rootNode).(type) {
 	case *ast.SelectStmt:
-		v.Type = READ_STMT
+		v.Type = ReadStmt
 	case *ast.UpdateStmt, *ast.DeleteStmt, *ast.InsertStmt:
-		v.Type = DML_STMT
+		v.Type = DmlStmt
 	case *ast.CreateIndexStmt, *ast.CreateTableStmt, *ast.CreateViewStmt, *ast.AlterTableStmt, *ast.DropTableStmt, *ast.DropIndexStmt, *ast.AlterDatabaseStmt, *ast.TruncateTableStmt:
-		v.Type = DDL_STMT
+		v.Type = DdlStmt
 	default:
 		_ = t
-		v.Type = OTHER_STMT
+		v.Type = OtherStmt
 	}
 	(*rootNode).Accept(v)
 	return v

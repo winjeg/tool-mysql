@@ -16,7 +16,7 @@ var (
 
 func getDb() *sql.DB {
 	once.Do(func() {
-		dbAddr := "testuser:123456@tcp(127.0.0.1:3306)/demo"
+		dbAddr := "testuser:123456@tcp(127.0.0.1:3306)/test"
 		db, err := sql.Open("mysql", dbAddr)
 		checkErr(err)
 		db.SetMaxIdleConns(2)
@@ -41,7 +41,7 @@ func checkErr(err error) {
 	}
 }
 
-// get generated id and rows affected and possible error
+// GetFromResult get generated id and rows affected and possible error
 func GetFromResult(result sql.Result, passError error) (int64, int64, error) {
 	if passError != nil {
 		return 0, 0, errors.New("result should not be null")
@@ -63,7 +63,7 @@ func GetFromResult(result sql.Result, passError error) (int64, int64, error) {
 
 // nullable data insertion
 
-// nullable string
+// NewNullString nullable string
 func NewNullString(i interface{}) sql.NullString {
 	if i == nil {
 		return sql.NullString{}
@@ -77,7 +77,7 @@ func NewNullString(i interface{}) sql.NullString {
 	}
 }
 
-// nullable int
+// NewNullInt nullable int
 func NewNullInt(i interface{}) sql.NullInt64 {
 	if i == nil {
 		return sql.NullInt64{}
@@ -91,7 +91,7 @@ func NewNullInt(i interface{}) sql.NullInt64 {
 	}
 }
 
-// nullable float
+// NewNullFloat nullable float
 func NewNullFloat(i interface{}) sql.NullFloat64 {
 	if i == nil {
 		return sql.NullFloat64{}
@@ -105,7 +105,7 @@ func NewNullFloat(i interface{}) sql.NullFloat64 {
 	}
 }
 
-// nullable float
+// NewNullBool nullable float
 func NewNullBool(i interface{}) sql.NullBool {
 	if i == nil {
 		return sql.NullBool{}

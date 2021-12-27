@@ -1,11 +1,12 @@
 # tool-mysql
 
-<<<<<<< HEAD
+[![Build Status](https://travis-ci.org/winjeg/tool-mysql.svg?branch=master)](https://travis-ci.org/winjeg/tool-mysql)
 [![Go Report Card](https://goreportcard.com/badge/github.com/winjeg/tool-mysql)](https://goreportcard.com/report/github.com/winjeg/tool-mysql)
 ![Golang CI](https://golangci.com/badges/github.com/winjeg/tool-mysql.svg)
 [![codecov](https://codecov.io/gh/winjeg/tool-mysql/branch/master/graph/badge.svg)](https://codecov.io/gh/winjeg/tool-mysql)
 
-This is a mysql toolset.
+---
+nothing more than a tool here.
 
 ## db-filler
 
@@ -108,8 +109,5 @@ log:
   output: std
   report-caller: true
 ```
-
  
-=======
-nothing more than a tool here.
->>>>>>> 22810b42b602b351532970f22e0945620db684af
+
