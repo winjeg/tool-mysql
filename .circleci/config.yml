@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/repo
     docker:
-      - image: circleci/golang:1.15.8
+      - image: golang:1.17.5-buster
       - image: circleci/mysql:5.6.50
         environment:
           MYSQL_ROOT_PASSWORD: 4321zxcv
@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Install MySQL CLI; Import dummy data; run an example query
           command: |
-            sudo apt-get update && sudo apt install default-mysql-client
+            sudo apt-get update && sudo apt install -y default-mysql-client
             mysql -h 127.0.0.1 -u testuer -p123456 --execute="CREATE TABLE `label` ( `id` int(11) unsigned NOT NULL COMMENT "the primary key", `name` varchar(64) NOT NULL DEFAULT "unknown" COMMENT "name", `age` tinyint(4) NOT NULL DEFAULT "0" COMMENT "age", `deleted` bit(1) NOT NULL , `note` varchar(255) DEFAULT NULL COMMENT "desc", `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT "created time", `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT "last updated", `personcol` float(5,3) unsigned DEFAULT NULL, `personcol2` double(6,3) DEFAULT NULL, `personcol1` decimal(3,2) DEFAULT NULL, `charcol` char(45) DEFAULT NULL, `textCol` mediumtext, `bitcol` bit(19) DEFAULT NULL, PRIMARY KEY (`id`), UNIQUE KEY `idx_id` (`id`), KEY `idx_name` (`name`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT="table for person information";"
       - run:
           name: Run tests
