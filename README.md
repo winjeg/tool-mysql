@@ -1,6 +1,7 @@
 # tool-mysql
 
-[![Build Status](https://travis-ci.org/winjeg/tool-mysql.svg?branch=master)](https://travis-ci.org/winjeg/tool-mysql)
+
+[![CircleCI](https://circleci.com/gh/winjeg/tool-mysql/tree/circleci-project-setup.svg?style=svg)](https://circleci.com/gh/winjeg/tool-mysql/?branch=circleci-project-setup)
 [![Go Report Card](https://goreportcard.com/badge/github.com/winjeg/tool-mysql)](https://goreportcard.com/report/github.com/winjeg/tool-mysql)
 ![Golang CI](https://golangci.com/badges/github.com/winjeg/tool-mysql.svg)
 [![codecov](https://codecov.io/gh/winjeg/tool-mysql/branch/master/graph/badge.svg)](https://codecov.io/gh/winjeg/tool-mysql)
