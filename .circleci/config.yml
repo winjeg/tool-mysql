@@ -28,6 +28,8 @@ jobs:
 
   test-setup:
     working_directory: ~/repo
+    docker:
+      - image: golang:1.17.5-buster
     steps:
       - run:
           name: Waiting for MySQL to be ready
