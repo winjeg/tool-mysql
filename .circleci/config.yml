@@ -1,10 +1,9 @@
 version: 2.1
 jobs:
-  build:
+  basic-setup:
     working_directory: ~/repo
     docker:
       - image: golang:1.17.5-buster
-      - image: mysql:5.6.51
         environment:
           MYSQL_ROOT_PASSWORD: 4321zxcv
           MYSQL_DATABASE: test
@@ -16,12 +15,26 @@ jobs:
           keys:
             - go-mod-v4-{{ checksum "go.sum" }}
       - run:
-          name: Install Dependencies
+          name: Download project modules
           command: go mod download
       - save_cache:
           key: go-mod-v4-{{ checksum "go.sum" }}
           paths:
             - "/go/pkg/mod"
+      - run:
+          name: Try build.
+          command: go build .
+
+  test-setup:
+    working_directory: ~/repo
+    docker:
+      - image: mysql:5.6.51
+        environment:
+          MYSQL_ROOT_PASSWORD: 4321zxcv
+          MYSQL_DATABASE: test
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: 123456
+    steps:
       - run:
           name: Waiting for MySQL to be ready
           command: |
@@ -40,6 +53,9 @@ jobs:
             bash <(curl -s https://codecov.io/bash)
 
 workflows:
-  sample:
+  build_test:
     jobs:
-      - build
+      - basic-setup
+      - test-setup:
+          requires:
+            - basic-setup
